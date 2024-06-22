@@ -1,6 +1,9 @@
 name: Build and package the Mac version
 
-on: push
+on:
+  push:
+    tags:
+      - v*
 
 jobs:
   build-app:
@@ -43,5 +46,5 @@ jobs:
         repo_token: ${{ secrets.TOKEN }}
         file: SalveTest.zip
         asset_name: SalveTest.zip
-        tag: latest-mac-build
+        tag: ${{ github.ref }}
         overwrite: true
