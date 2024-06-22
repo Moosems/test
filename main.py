@@ -14,7 +14,7 @@ GITHUB_URL = (
     "https://api.github.com/repos/Moosems/test/releases/latest"
 )
 
-VERSION = "0.0.2"
+VERSION = "0.0.3"
 is_frozen = False
 try:
     folder = Path(__compiled__.containing_dir).resolve().parent.parent  # type: ignore # noqa: F821
@@ -73,7 +73,7 @@ def download_newest_version() -> None:
     print(listdir(app_dir.name))
     print(f"Moving {folder} to {old_app_dir.name}")
     move(folder, old_app_dir.name)
-    print(f"Moving {app_dir.name + "/Test.app"} to /Applications/Test.app")
+    print(f"Moving {app_dir.name + '/Test.app'} to /Applications/Test.app")
     move(app_dir.name + "/Test.app", "/Applications/Test.app")
     app_dir.cleanup()
     zip_path.close()
