@@ -1,6 +1,6 @@
 from pathlib import Path
-from os import listdir, rmdir
-from shutil import move
+from os import listdir
+from shutil import move, rmtree
 from subprocess import Popen
 from sys import exit
 from tempfile import NamedTemporaryFile, TemporaryDirectory
@@ -10,11 +10,9 @@ from zipfile import ZipFile
 from requests import Response, get
 from requests.exceptions import ReadTimeout
 
-GITHUB_URL = (
-    "https://api.github.com/repos/Moosems/test/releases/latest"
-)
+GITHUB_URL = "https://api.github.com/repos/Moosems/test/releases/latest"
 
-VERSION = "0.0.3"
+VERSION = "0.0.4"
 is_frozen = False
 try:
     folder = Path(__compiled__.containing_dir).resolve().parent.parent  # type: ignore # noqa: F821
@@ -74,15 +72,18 @@ def download_newest_version() -> None:
     print(f"Moving {folder} to {old_app_dir.name}")
     move(folder, old_app_dir.name)
     print(f"Moving {app_dir.name + '/Test.app'} to /Applications/Test.app")
+    try:
+        rmtree("/Applications/Test.app")
+    except OSError or Exception:
+        pass
     move(app_dir.name + "/Test.app", "/Applications/Test.app")
     app_dir.cleanup()
     zip_path.close()
     old_app_dir.cleanup()
-    Popen(
-        ["chmod", "+x", "/Applications/Test.app/Contents/MacOS/Test"]
-    ).wait()
+    Popen(["chmod", "+x", "/Applications/Test.app/Contents/MacOS/Test"]).wait()
     Popen(["open", "/Applications/Test.app"])
     exit(1)
+
 
 if not is_newest_version() and is_frozen:
     print("Updating")
