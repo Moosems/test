@@ -14,7 +14,7 @@ GITHUB_URL = (
     "https://api.github.com/repos/Moosems/test/releases/latest"
 )
 
-VERSION = "0.0.1"
+VERSION = "0.0.2"
 is_frozen = False
 try:
     folder = Path(__compiled__.containing_dir).resolve().parent.parent  # type: ignore # noqa: F821
