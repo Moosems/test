@@ -1,5 +1,5 @@
 from pathlib import Path
-from os import rmdir
+from os import listdir, rmdir
 from shutil import move
 from subprocess import Popen
 from sys import exit
@@ -37,6 +37,7 @@ def is_newest_version() -> bool:
             timeout=3,
         )
         version: str = response.json()["tag_name"].lstrip("v")
+        print(f"New version: {version}")
     except ReadTimeout:
         return False
 
@@ -57,6 +58,7 @@ def download_newest_version() -> None:
         return
 
     assets: list[dict[str, str]] = response.json()["assets"]
+    print(f"Assets: {assets}")
 
     if not assets:
         return
@@ -67,8 +69,11 @@ def download_newest_version() -> None:
     urlretrieve(assets[0]["browser_download_url"], zip_path.name)
     with ZipFile(zip_path.name) as zip_ref:
         zip_ref.extractall(app_dir.name)
+    print("Extracted")
+    print(listdir(app_dir.name))
+    print(f"Moving {folder} to {old_app_dir.name}")
     move(folder, old_app_dir.name)
-    rmdir("/Applications/Test.app")
+    print(f"Moving {app_dir.name + "/Test.app"} to /Applications/Test.app")
     move(app_dir.name + "/Test.app", "/Applications/Test.app")
     app_dir.cleanup()
     zip_path.close()
