@@ -44,7 +44,7 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.TOKEN }}
-        file: SalveTest.zip
-        asset_name: SalveTest.zip
+        file: Test.zip
+        asset_name: Test.zip
         tag: ${{ github.ref }}
         overwrite: true
